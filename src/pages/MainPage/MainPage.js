@@ -1,57 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Loader from "../common/Loader/Loader";
 
-class MainPage extends React.Component {
-  state = {
-    data: null,
-    isLoading: true,
-  };
+function MainPage() {
+  const [data, setData] = useState(null);
+  let [isLoading, setLoading] = useState(true);
 
-  async componentDidMount() {
+  useEffect(async () => {
+    function request(url) {
+      return fetch(url);
+    }
     const url = "https://swapi.dev/api/";
-    const response = await this.request(url);
+    const response = await request(url);
     const data = await response.json();
-    console.log(data);
-    this.setState({
-      isLoading: false,
-      data: data,
-    });
-  }
 
-  request = (url) => {
-    return fetch(url);
-  };
+    setData(data);
+    setLoading(!isLoading);
+  }, []);
 
-  render() {
-    let count = 1;
-    return (
-      <div>
-        {this.state.isLoading ? (
-          <Loader />
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Номер</th>
-                <th>Название</th>
-                <th>API</th>
-                <th>Ссылка</th>
+  let count = 1;
+  return (
+    <div>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Номер</th>
+              <th>Название</th>
+              <th>API</th>
+              <th>Ссылка</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(data).map((item, index) => (
+              <tr key={index}>
+                <td>{count++}</td>
+                <td>{item}</td>
+                <td>{data[item]}</td>
+                <td>
+                  <a href={`./${item}`}>{item}</a>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {Object.keys(this.state.data).map((item,index) => (
-                <tr key={index}>
-                  <td>{count++}</td>
-                  <td>{item}</td>
-                  <td>{this.state.data[item]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-    );
-  }
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
 }
 
 export default MainPage;
