@@ -1,23 +1,37 @@
 import React, { useState, useEffect } from "react";
-import Loader from "../common/Loader/Loader";
+import Loader from "../../common/Loader/Loader";
+import "antd/dist/antd.css";
+import { Button, Layout } from "antd";
+const { Header, Content } = Layout;
 
 function Species() {
   const [species, setSpecies] = useState([]);
-  useEffect(async () => {
-    function request(url) {
-      return fetch(url);
-    }
-    const url = "https://swapi.dev/api/species/";
-    const response = await request(url);
-    const data = await response.json();
-    console.log(data.results);
-    setSpecies(data.results);
+  let [isLoading, setLoading] = useState(true);
+  useEffect( () => {
+    let pages = 1;
+    async function request() {      
+      const url = `https://swapi.dev/api/species/?page=${pages}`;
+      const response = await fetch(url)
+      const data = await response.json()
+      setSpecies((oldArray) => [...oldArray, ...data.results]);
+      if (data["next"]) {
+        pages++;
+        request();
+      }
+      console.log(species);
+    }    
+    request()
+    setLoading(currentIsLoaded=>!currentIsLoaded)
   }, []);
 
   return (
-    <div>
-        <a href='./'>Назад</a>
-      <table>
+    <>
+      <Layout>
+      <Header>
+      <Button href="./">Назад</Button>
+      </Header>
+      {isLoading?<Loader/>:  
+      (<table>
         <thead>
           <tr>
             <th>Наименование</th>
@@ -42,8 +56,9 @@ function Species() {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </table>)}
+      </Layout>
+    </>
   );
 }
 

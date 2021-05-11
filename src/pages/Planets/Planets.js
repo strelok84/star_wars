@@ -1,18 +1,31 @@
 import React, { useState, useEffect, useReducer } from "react";
-import Loader from "../common/Loader/Loader";
+import Loader from "../../common/Loader/Loader";
+import "antd/dist/antd.css";
+import { Button, Layout } from "antd";
+import {CaretDownOutlined} from '@ant-design/icons';
+const { Header, Content } = Layout;
+
 
 function Planets() {
   const [planets, setPlanets] = useState([]);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
-  useEffect(async () => {
-    function request(url) {
-      return fetch(url);
+  const [isLoading, setLoading] = useState(true);
+  useEffect(() => {
+    let pages = 1;
+    async function request() {
+      const url = `https://swapi.dev/api/planets/?page=${pages}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setPlanets((oldArray) => [...oldArray, ...data.results]);
+      if (data["next"]) {
+        pages++;
+        request();
+      }
+      console.log(planets);
     }
-    const url = "https://swapi.dev/api/planets/";
-    const response = await request(url);
-    const data = await response.json();
-    console.log(data.results);
-    setPlanets(data.results);
+    
+    request();
+    setLoading(currentIsLoaded=>!currentIsLoaded)
   }, []);
 
   function byNumberField(field) {
@@ -34,9 +47,14 @@ function Planets() {
   }
 
   return (
-    <div>
-        <a href='./'>Назад</a>
-      <table>
+    <>
+    <Layout>
+      <Header>
+      <Button href="./">Назад</Button>
+      
+      </Header>
+      {isLoading?<Loader />:
+      (<table>
         <thead>
           <tr>
             <th
@@ -45,6 +63,7 @@ function Planets() {
               }}
             >
               Имя
+              <CaretDownOutlined />
             </th>
             <th
               onClick={() => {
@@ -52,6 +71,7 @@ function Planets() {
               }}
             >
               Климат
+              <CaretDownOutlined />
             </th>
             <th
               onClick={() => {
@@ -59,6 +79,7 @@ function Planets() {
               }}
             >
               Гравитация
+              <CaretDownOutlined />
             </th>
             <th
               onClick={() => {
@@ -66,6 +87,7 @@ function Planets() {
               }}
             >
               Продолжительность дня
+              <CaretDownOutlined />
             </th>
             <th
               onClick={() => {
@@ -73,6 +95,7 @@ function Planets() {
               }}
             >
               Продолжительность года
+              <CaretDownOutlined />
             </th>
             <th
               onClick={() => {
@@ -80,6 +103,7 @@ function Planets() {
               }}
             >
               Население
+              <CaretDownOutlined />
             </th>
             <th
               onClick={() => {
@@ -87,6 +111,7 @@ function Planets() {
               }}
             >
               Поверхность
+              <CaretDownOutlined />
             </th>
           </tr>
         </thead>
@@ -103,8 +128,9 @@ function Planets() {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </table>)}
+      </Layout>
+    </>
   );
 }
 
