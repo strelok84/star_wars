@@ -53,7 +53,7 @@ function Vehicles() {
             <Loader />
           ) : (
             <table>
-              <thead>
+              <thead className="table_head">
                 <tr>
                   <th>Наименование</th>
                   <th>Модель</th>

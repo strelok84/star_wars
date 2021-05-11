@@ -52,7 +52,7 @@ function Species() {
             <Loader />
           ) : (
             <table>
-              <thead>
+              <thead className="table_head">
                 <tr>
                   <th>Наименование</th>
                   <th>Средний рост</th>

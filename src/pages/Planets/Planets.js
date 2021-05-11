@@ -63,7 +63,7 @@ function Planets() {
     );
     forceUpdate();
   }
-  
+
   function prevPage() {
     if (page > 1) {
       setPage(--page);
@@ -87,9 +87,9 @@ function Planets() {
             <Loader />
           ) : (
             <table>
-              <thead>
+              <thead className="table_head">
                 <tr>
-                  <th
+                  <th className="sort"
                     onClick={() => {
                       byAlphField("name");
                     }}
@@ -97,7 +97,7 @@ function Planets() {
                     Имя
                     <CaretDownOutlined />
                   </th>
-                  <th
+                  <th className="sort"
                     onClick={() => {
                       byAlphField("climate");
                     }}
@@ -105,7 +105,7 @@ function Planets() {
                     Климат
                     <CaretDownOutlined />
                   </th>
-                  <th
+                  <th className="sort"
                     onClick={() => {
                       byNumberField("gravity");
                     }}
@@ -113,7 +113,7 @@ function Planets() {
                     Гравитация
                     <CaretDownOutlined />
                   </th>
-                  <th
+                  <th className="sort"
                     onClick={() => {
                       byNumberField("rotation_period");
                     }}
@@ -121,7 +121,8 @@ function Planets() {
                     Продолжительность дня
                     <CaretDownOutlined />
                   </th>
-                  <th
+
+                  <th className="sort"
                     onClick={() => {
                       byNumberField("orbital_period");
                     }}
@@ -129,7 +130,8 @@ function Planets() {
                     Продолжительность года
                     <CaretDownOutlined />
                   </th>
-                  <th
+
+                  <th className="sort"
                     onClick={() => {
                       byNumberField("population");
                     }}
@@ -137,7 +139,7 @@ function Planets() {
                     Население
                     <CaretDownOutlined />
                   </th>
-                  <th
+                  <th className="sort"
                     onClick={() => {
                       byAlphField("terrain");
                     }}

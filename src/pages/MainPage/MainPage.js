@@ -30,7 +30,7 @@ function MainPage() {
             <Loader />
           ) : (
             <table>
-              <thead>
+              <thead className="table_head">
                 <tr>
                   <th>Номер</th>
                   <th>Название</th>
