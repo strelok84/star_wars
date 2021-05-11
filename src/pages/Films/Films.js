@@ -1,29 +1,48 @@
 import React, { useState, useEffect } from "react";
 import Loader from "../../common/Loader/Loader";
-
 import "antd/dist/antd.css";
-
 import { Button, Layout } from "antd";
-const { Header, Content } = Layout;
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+const { Header, Content, Footer } = Layout;
 
 function Films() {
   const [films, setFilms] = useState([]);
   let [isLoading, setLoading] = useState(true);
+  let [page, setPage] = useState(1);
+  const [maxpage, setMaxpage] = useState();
+
   useEffect(() => {
-    let pages = 1;
+    const prevBtn = document.getElementById("prev");
+    page === 1 ? (prevBtn.disabled = true) : (prevBtn.disabled = false);
+    const nextBtn = document.getElementById("next");
+    page === maxpage ? (nextBtn.disabled = true) : (nextBtn.disabled = false);
     async function request() {
-      const url = `https://swapi.dev/api/films/?page=${pages}`;
+      const url = `https://swapi.dev/api/films/?page=${page}`;
       const response = await fetch(url);
       const data = await response.json();
-      setFilms((oldArray) => [...oldArray, ...data.results]);
-      if (data["next"]) {
-        pages++;
-        request();
+      console.log(data)
+      if (response.ok) {
+        setLoading((currentIsLoaded) => false);
+        setFilms(data.results);
+        setMaxpage(Math.ceil(data.count / 10));
       }
     }
     request();
     setLoading((currentIsLoaded) => (currentIsLoaded = false));
-  }, []);
+  }, [page]);
+
+  function prevPage() {
+    if (page > 1) {
+      setPage(--page);
+    }
+  }
+
+  function nextPage() {
+    if (page < maxpage) {
+      setPage(++page);
+    } else if (page === maxpage) {
+    }
+  }
 
   return (
     <>
@@ -57,6 +76,14 @@ function Films() {
             </table>
           )}
         </Content>
+        <Footer>
+          <Button onClick={() => prevPage()} id="prev">
+            <ArrowLeftOutlined />
+          </Button>
+          <Button onClick={() => nextPage()} id="next">
+            <ArrowRightOutlined />
+          </Button>
+        </Footer>
       </Layout>
     </>
   );

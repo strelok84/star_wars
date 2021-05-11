@@ -7,30 +7,48 @@ import "antd/dist/antd.css";
 import "./people.scss";
 
 import { Button, Layout } from "antd";
-
-const { Header, Content } = Layout;
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+const { Header, Content,Footer } = Layout;
 
 function People() {
   const [people, setPeople] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  let [page, setPage] = useState(1);
+  const [maxpage, setMaxpage] = useState();
+
   useEffect(() => {
-    let pages = 1;
+    const prevBtn = document.getElementById("prev");
+    page === 1 ? (prevBtn.disabled = true) : (prevBtn.disabled = false);
+    const nextBtn = document.getElementById("next");
+    page === maxpage ? (nextBtn.disabled = true) : (nextBtn.disabled = false);
+    
     async function request() {
-      const url = `https://swapi.dev/api/people/?page=${pages}`;
+      const url = `https://swapi.dev/api/people/?page=${page}`;
       const response = await fetch(url);
       const data = await response.json();
-      setPeople((oldArray) => [...oldArray, ...data.results]);
-      if (data["next"]) {
-        pages++;
-        request();
+      if (response.ok) {
+        setLoading((currentIsLoaded) => false);
+        setPeople(data.results);
+        setMaxpage(Math.ceil(data.count / 10));
       }
       console.log(people);
     }
 
     request();
-    setLoading((currentIsLoaded) => !currentIsLoaded);
-  }, []);
+    
+  }, [page]);
+  function prevPage() {
+    if (page > 1) {
+      setPage(--page);
+    }
+  }
 
+  function nextPage() {
+    if (page < maxpage) {
+      setPage(++page);
+    } else if (page === maxpage) {
+    }
+  }
   return (
     <>
       <Layout>
@@ -96,6 +114,14 @@ function People() {
             </table>
           )}
         </Content>
+        <Footer>
+          <Button onClick={() => prevPage()} id="prev">
+            <ArrowLeftOutlined />
+          </Button>
+          <Button onClick={() => nextPage()} id="next">
+            <ArrowRightOutlined />
+          </Button>
+        </Footer>
       </Layout>
     </>
   );
