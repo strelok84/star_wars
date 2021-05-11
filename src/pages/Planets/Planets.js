@@ -11,7 +11,7 @@ const { Header, Content, Footer } = Layout;
 
 function Planets() {
   const [planets, setPlanets] = useState([]);
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isLoading, setLoading] = useState(true);
   let [page, setPage] = useState(1);
   const [maxpage, setMaxpage] = useState();
@@ -89,7 +89,8 @@ function Planets() {
             <table>
               <thead className="table_head">
                 <tr>
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byAlphField("name");
                     }}
@@ -97,7 +98,8 @@ function Planets() {
                     Имя
                     <CaretDownOutlined />
                   </th>
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byAlphField("climate");
                     }}
@@ -105,7 +107,8 @@ function Planets() {
                     Климат
                     <CaretDownOutlined />
                   </th>
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byNumberField("gravity");
                     }}
@@ -113,7 +116,8 @@ function Planets() {
                     Гравитация
                     <CaretDownOutlined />
                   </th>
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byNumberField("rotation_period");
                     }}
@@ -122,7 +126,8 @@ function Planets() {
                     <CaretDownOutlined />
                   </th>
 
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byNumberField("orbital_period");
                     }}
@@ -131,7 +136,8 @@ function Planets() {
                     <CaretDownOutlined />
                   </th>
 
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byNumberField("population");
                     }}
@@ -139,7 +145,8 @@ function Planets() {
                     Население
                     <CaretDownOutlined />
                   </th>
-                  <th className="sort"
+                  <th
+                    className="sort"
                     onClick={() => {
                       byAlphField("terrain");
                     }}
