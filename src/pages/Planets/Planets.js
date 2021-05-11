@@ -13,7 +13,7 @@ function Planets() {
   const [planets, setPlanets] = useState([]);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isLoading, setLoading] = useState(true);
-  let [page, setPage] = useState(3);
+  let [page, setPage] = useState(1);
   const [maxpage, setMaxpage] = useState();
   useEffect(() => {
     const prevBtn = document.getElementById("prev");
@@ -24,7 +24,6 @@ function Planets() {
       const url = `https://swapi.dev/api/planets/?page=${page}`;
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setLoading((currentIsLoaded) => false);
         setPlanets(data.results);
@@ -40,12 +39,11 @@ function Planets() {
       planets.sort((a, b) => {
         if (+a[field] > +b[field]) {
           return 1;
-        } 
+        }
         if (+a[field] < +b[field]) {
           return -1;
-        } 
+        }
         return 0;
-        
       })
     );
     forceUpdate();
@@ -56,15 +54,16 @@ function Planets() {
       planets.sort((a, b) => {
         if (a[field] > b[field]) {
           return 1;
-        } 
+        }
         if (a[field] < b[field]) {
           return -1;
-        } 
+        }
         return 0;
       })
     );
     forceUpdate();
   }
+  
   function prevPage() {
     if (page > 1) {
       setPage(--page);

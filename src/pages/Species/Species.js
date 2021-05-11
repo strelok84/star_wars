@@ -20,7 +20,6 @@ function Species() {
       const url = `https://swapi.dev/api/species/?page=${page}`;
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setLoading((currentIsLoaded) => false);
         setSpecies(data.results);

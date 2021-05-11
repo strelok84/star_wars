@@ -16,18 +16,17 @@ function Vehicles() {
     const nextBtn = document.getElementById("next");
     page === maxpage ? (nextBtn.disabled = true) : (nextBtn.disabled = false);
     async function request() {
-      const url = `https://swapi.dev/api/vehicles/?page=${page}`; 
+      const url = `https://swapi.dev/api/vehicles/?page=${page}`;
       const response = await fetch(url);
       const data = await response.json();
       setVehicles((oldArray) => [...oldArray, ...data.results]);
-      console.log(data);
       if (response.ok) {
         setLoading((currentIsLoaded) => false);
         setVehicles(data.results);
         setMaxpage(Math.ceil(data.count / 10));
       }
-    }     
-    request();    
+    }
+    request();
   }, [page]);
 
   function prevPage() {
@@ -45,40 +44,43 @@ function Vehicles() {
 
   return (
     <>
-       <Layout>
+      <Layout>
         <Header>
           <Button href="./">Назад</Button>
         </Header>
         <Content>
-      {isLoading?<Loader/>:  
-      (<table>
-        <thead>
-          <tr>
-            <th>Наименование</th>
-            <th>Модель</th>
-            <th>Класс</th>
-            <th>Грузоподьемность</th>
-            <th>Производитель</th>
-            <th>Экипаж</th>
-            <th>Пассажиров</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vehicles.map((item, index) => (
-            <tr key={index}>
-              <td>{item.name}</td>
-              <td>{item.model}</td>
-              <td>{item.vehicle_class}</td>
-              <td>{item.cargo_capacity}</td>
-              <td>{item.manufacturer}</td>
-              <td>{item.crew}</td>
-              <td>{item.passengers}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>)}
-      </Content>
-      <Footer>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Наименование</th>
+                  <th>Модель</th>
+                  <th>Класс</th>
+                  <th>Грузоподьемность</th>
+                  <th>Производитель</th>
+                  <th>Экипаж</th>
+                  <th>Пассажиров</th>
+                </tr>
+              </thead>
+              <tbody>
+                {vehicles.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.name}</td>
+                    <td>{item.model}</td>
+                    <td>{item.vehicle_class}</td>
+                    <td>{item.cargo_capacity}</td>
+                    <td>{item.manufacturer}</td>
+                    <td>{item.crew}</td>
+                    <td>{item.passengers}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Content>
+        <Footer>
           <Button onClick={() => prevPage()} id="prev">
             <ArrowLeftOutlined />
           </Button>
@@ -86,7 +88,7 @@ function Vehicles() {
             <ArrowRightOutlined />
           </Button>
         </Footer>
-        </Layout>
+      </Layout>
     </>
   );
 }

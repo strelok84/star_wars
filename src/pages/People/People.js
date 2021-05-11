@@ -8,7 +8,7 @@ import "./people.scss";
 
 import { Button, Layout } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-const { Header, Content,Footer } = Layout;
+const { Header, Content, Footer } = Layout;
 
 function People() {
   const [people, setPeople] = useState([]);
@@ -21,7 +21,7 @@ function People() {
     page === 1 ? (prevBtn.disabled = true) : (prevBtn.disabled = false);
     const nextBtn = document.getElementById("next");
     page === maxpage ? (nextBtn.disabled = true) : (nextBtn.disabled = false);
-    
+
     async function request() {
       const url = `https://swapi.dev/api/people/?page=${page}`;
       const response = await fetch(url);
@@ -31,11 +31,9 @@ function People() {
         setPeople(data.results);
         setMaxpage(Math.ceil(data.count / 10));
       }
-      console.log(people);
     }
 
     request();
-    
   }, [page]);
   function prevPage() {
     if (page > 1) {

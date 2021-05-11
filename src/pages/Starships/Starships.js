@@ -14,19 +14,18 @@ function Starships() {
     const prevBtn = document.getElementById("prev");
     page === 1 ? (prevBtn.disabled = true) : (prevBtn.disabled = false);
     const nextBtn = document.getElementById("next");
-    page === maxpage ? (nextBtn.disabled = true) : (nextBtn.disabled = false);    
-    async function request() {      
+    page === maxpage ? (nextBtn.disabled = true) : (nextBtn.disabled = false);
+    async function request() {
       const url = `https://swapi.dev/api/starships/?page=${page}`;
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setLoading((currentIsLoaded) => false);
         setStarships(data.results);
         setMaxpage(Math.ceil(data.count / 10));
-      }     
-    }    
-    request();    
+      }
+    }
+    request();
   }, [page]);
 
   function prevPage() {
@@ -44,40 +43,43 @@ function Starships() {
 
   return (
     <>
-     <Layout>
+      <Layout>
         <Header>
           <Button href="./">Назад</Button>
         </Header>
         <Content>
-      {isLoading?<Loader />:
-      (<table>
-        <thead>
-          <tr>
-            <th>Наименование</th>
-            <th>Модель</th>
-            <th>Класс</th>
-            <th>Грузоподьемность</th>
-            <th>Производитель</th>
-            <th>Экипаж</th>
-            <th>Пассажиров</th>
-          </tr>
-        </thead>
-        <tbody>
-          {starships.map((item, index) => (
-            <tr key={index}>
-              <td>{item.name}</td>
-              <td>{item.model}</td>
-              <td>{item.starship_class}</td>
-              <td>{item.cargo_capacity}</td>
-              <td>{item.manufacturer}</td>
-              <td>{item.crew}</td>
-              <td>{item.passengers}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>)}
-      </Content>
-      <Footer>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Наименование</th>
+                  <th>Модель</th>
+                  <th>Класс</th>
+                  <th>Грузоподьемность</th>
+                  <th>Производитель</th>
+                  <th>Экипаж</th>
+                  <th>Пассажиров</th>
+                </tr>
+              </thead>
+              <tbody>
+                {starships.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.name}</td>
+                    <td>{item.model}</td>
+                    <td>{item.starship_class}</td>
+                    <td>{item.cargo_capacity}</td>
+                    <td>{item.manufacturer}</td>
+                    <td>{item.crew}</td>
+                    <td>{item.passengers}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Content>
+        <Footer>
           <Button onClick={() => prevPage()} id="prev">
             <ArrowLeftOutlined />
           </Button>
@@ -85,7 +87,7 @@ function Starships() {
             <ArrowRightOutlined />
           </Button>
         </Footer>
-        </Layout>
+      </Layout>
     </>
   );
 }

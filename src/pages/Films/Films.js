@@ -19,8 +19,7 @@ function Films() {
     async function request() {
       const url = `https://swapi.dev/api/films/?page=${page}`;
       const response = await fetch(url);
-      const data = await response.json();
-      console.log(data)
+      const data = await response.json();     
       if (response.ok) {
         setLoading((currentIsLoaded) => false);
         setFilms(data.results);
